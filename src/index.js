@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ajax from 'superagent';
 
+//import './stylesheet.css';
+import './stylesheet.scss';
 import Card from './Card';
 
 class App extends React.Component {

@@ -11,7 +11,15 @@ module.exports = {
             test: /\.js?$/,
             exclude: /node_modules/,
             loader: 'react-hot!babel'
-        }]
+        },
+        {
+            test: /\.css$/, // Only .css files
+	    loader: 'style!css' // Run both loaders
+        },
+       {
+            test: /\.scss$/,
+            loader: 'style!css!sass'
+       }]
     },
     resolve: {
         extensions: ['', '.js']

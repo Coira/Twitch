@@ -1,0 +1,31 @@
+$containerColour: gray;
+$onlineColour: red;
+$offlineColor: blue;
+$containerWidth: 600px;
+$cardWidth: $containerWidth - 200px;
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;			    
+}
+
+.streamcont {
+    background-color: $containerColour;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: $containerWidth;
+}
+
+.card {
+    background-color: $onlineColour;
+    width: $cardWidth;
+
+    img {
+	width: 100px;
+	height: 100px;
+    }
+}
+
