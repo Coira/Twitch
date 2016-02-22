@@ -9,70 +9,78 @@ class App extends React.Component {
 	super(props);
 
 	/*this.state = {streamers: ['richard_hammer', 'Drathy', 'handmade_hero', 'freecodecamp', 'darnisart', 'brunofin', 'comster404', 'DansGaming', 'RobTheSwan', 'thatsBamboo', 'extracredits', 'ProblemsIRL', 'theindieinitiative']};*/
+	this.streamers = ['ProblemsIRL', 'theindieinitiative', 'SirTwiggy'];	
 
-	this.streamers = ['epiclan1', 'theindieinitiative', 'Drathy'];	
 	this.state = {streamerData: [] };
     }
 
     componentDidMount() {
-	let streamerData = [];
 	this.streamers.map((name, index) => {
-	    let stream = this.fetchStreamData(name);
-	    let profile = this.fetchProfileData(name);
-	    streamerData.push({name: name,
-			       profile: profile,
-			       stream: stream});
-	    //console.log(stream, profile, name);
-	    //console.log(streamerData.length);
-		
+	    this.fetchData(name);
 	});
 
-	this.setState({streamerData});
     }
 
-    fetchProfileData(name) {
+    fetchData(name) {
 	let profile = {};
-	const url = 'https://api.twitch.tv/kraken/users/';
-	$.getJSON(`${url}${name}?callback=?`, (data) => {
-	    console.log(data);
-	    profile.display_name = data.display_name;
-	    profile.logo = data.logo;
-	});
-	
-	return profile;
-	    
-    }
-    
-    fetchStreamData(name) {
-	let streamer = {};
-	const url = 'https://api.twitch.tv/kraken/streams/';
-	$.getJSON(`${url}${name}?callback=?`, (data) => {
-	    if (data.stream === null) {
-		streamer.online = false;
-	    }
-	    else {
-		streamer.online = true;
-		streamer.logo = data.stream.channel.logo;
-		streamer.game = data.stream.game;
-		streamer.status = data.stream.channel.status;
-	    }
-	});
-	
-	return streamer;
-    }
-    
-    render() {
-	//this.state.streamData.map((streamer, index) => {
-	//    console.log(streamer);
-	//});
+	let stream = {};
 
-	console.log(this.state.streamerData);
+	const pURL = 'https://api.twitch.tv/kraken/users/';
+	const sURL = 'https://api.twitch.tv/kraken/streams/';
 	
-	return(<div>
-	    Hello
-	    <Card />
-	</div>
-	);
+	$.when(
+
+	    // fetch user's profile data
+	    $.getJSON(`${pURL}${name}?callback=?`, (data) => {
+		profile.display_name = data.display_name;
+		profile.logo = data.logo;
+	    }),
+
+	    // fetch user's stream, if user is currently streaming
+	    $.getJSON(`${sURL}${name}?callback=?`, (data) => {
+		if (data.stream === null) {
+		    stream = null;
+		}
+		else {
+		    stream.game = data.stream.game;
+		    stream.status = data.stream.channel.status;
+		}
+	    })
+
+	).done($.proxy(function() {
+	    let data = {
+		name: name,
+		profile: profile,
+		stream: stream
+	    }
+	    
+	    this.setState({
+		streamerData: this.state.streamerData.concat([data])
+	    });
+	    
+	}, this));
+	
+    }
+        
+    render() {
+	console.log(this.state.streamerData.length);
+	return (
+	    <div className="streamCont">
+		Twitch
+		{
+		    this.state.streamerData.map((streamer, index) => {
+			return (
+			    <div>
+				<Card key={index}
+				      profile={streamer.profile}
+				      stream={streamer.stream}>
+				</Card>
+			    </div>
+			);
+		    })
+		}
+	    </div>
+	);	
     }
 
     
