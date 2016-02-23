@@ -11,7 +11,7 @@ class App extends React.Component {
 	super(props);
 
 	/*this.state = {streamers: ['richard_hammer', 'Drathy', 'handmade_hero', 'freecodecamp', 'darnisart', 'brunofin', 'comster404', 'DansGaming', 'RobTheSwan', 'thatsBamboo', 'extracredits', 'ProblemsIRL', 'theindieinitiative']};*/
-	this.streamers = ['ProblemsIRL', 'theindieinitiative', 'SirTwiggy'];	
+	this.streamers = ['richard_hammer', 'Monstercat', 'theindieinitiative', 'imaqtpie'];	
 
 	this.state = {streamerData: [] };
     }
@@ -74,6 +74,7 @@ class App extends React.Component {
 			return (
 			    <div>
 				<Card key={index}
+				      name={streamer.name}
 				      profile={streamer.profile}
 				      stream={streamer.stream}>
 				</Card>

@@ -8,25 +8,38 @@ class Card extends React.Component {
     }
 
     render() {
-	console.log("render called");
-	
+
 	let stream;
+	let status = "";
 	if (this.props.stream) {
-	    console.log("no stream ", this.props.profile.display_name);
 	    stream = (
-		<div>
-		    <p> {this.props.stream.status} </p>
-		    <p> {this.props.stream.game} </p>
-		</div>
+		<span>
+		    <span className="game">{this.props.stream.game}</span>
+		    <p>{this.props.stream.status}</p>
+		</span>
 	    );
+
+	    status = "online";
+	}
+	else {
+	    stream = (
+		<p>Offline</p>
+	    );
+
+	    status = "offline";
 	}
 	
 	return (
-	    <div className = "card">
-		<p> {this.props.profile.display_name} </p>
+	    <a target="_blank" href={"//twitch.tv/"+this.props.name}
+	       className = {"card " + status}>
 		<img src={this.props.profile.logo}/>
-		{stream}
-	    </div>
+		<div className = "userDetails">
+		    <span className = "userName ">
+			{this.props.profile.display_name}
+		    </span>
+		    {stream}
+		</div>
+	    </a>
 	);
     }
 }
