@@ -11,9 +11,12 @@ class App extends React.Component {
 	super(props);
 
 	/*this.state = {streamers: ['richard_hammer', 'Drathy', 'handmade_hero', 'freecodecamp', 'darnisart', 'brunofin', 'comster404', 'DansGaming', 'RobTheSwan', 'thatsBamboo', 'extracredits', 'ProblemsIRL', 'theindieinitiative']};*/
-	this.streamers = ['richard_hammer', 'Monstercat', 'theindieinitiative', 'imaqtpie'];	
+	this.streamers = ['comster404', 'richard_hammer', 'Monstercat', 'theindieinitiative', 'imaqtpie'];	
 
-	this.state = {streamerData: [] };
+	this.state = {
+	    streamerData: [],
+	    mode: "all"
+	};
     }
 
     componentDidMount() {
@@ -26,7 +29,8 @@ class App extends React.Component {
     fetchData(name) {
 	let profile = {};
 	let stream = {};
-
+	let status = "";
+	
 	const pURL = 'https://api.twitch.tv/kraken/users/';
 	const sURL = 'https://api.twitch.tv/kraken/streams/';
 	
@@ -38,14 +42,20 @@ class App extends React.Component {
 		profile.logo = data.logo;
 	    }),
 
-	    // fetch user's stream, if user is currently streaming
+	    // fetch stream if account is currently streaming
 	    $.getJSON(`${sURL}${name}?callback=?`, (data) => {
-		if (data.stream === null) {
-		    stream = null;
+
+		if (data.error) {  // closed/non-existent account
+		    status = "closed";
 		}
-		else {
+		else if (data.stream === null) {  // account offline
+		    stream = null;
+		    status = "offline";
+		}
+		else {  // account online
 		    stream.game = data.stream.game;
 		    stream.status = data.stream.channel.status;
+		    status = "online";
 		}
 	    })
 
@@ -53,7 +63,8 @@ class App extends React.Component {
 	    let data = {
 		name: name,
 		profile: profile,
-		stream: stream
+		stream: stream,
+		status: status
 	    }
 	    
 	    this.setState({
@@ -63,20 +74,40 @@ class App extends React.Component {
 	}, this));
 	
     }
-        
+
+    allMode() {
+	this.setState({mode: "all"});
+    }
+
+    offlineMode() {
+	this.setState({mode: "offline"});
+    }
+
+    onlineMode() {
+	this.setState({mode: "online"});
+    }
+            
     render() {
-	console.log(this.state.streamerData.length);
 	return (
 	    <div className="streamCont">
-		Twitch
+		<div className="twitchHeader">Twitch Streamers</div>
+		<div className="buttons">
+		    <button className="allBtn"
+			    onClick={this.allMode.bind(this)}>All</button>
+		    <button className="onlineBtn"
+			 onClick={this.onlineMode.bind(this)}>Online</button>
+		    <button className="offlineBtn"
+			    onClick={this.offlineMode.bind(this)}>Offline</button>
+		</div>
 		{
 		    this.state.streamerData.map((streamer, index) => {
 			return (
-			    <div>
-				<Card key={index}
-				      name={streamer.name}
+			    <div key={index}>
+				<Card name={streamer.name}
 				      profile={streamer.profile}
-				      stream={streamer.stream}>
+				      stream={streamer.stream}
+				      status={streamer.status}
+				      mode={this.state.mode}>
 				</Card>
 			    </div>
 			);

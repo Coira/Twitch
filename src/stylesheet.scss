@@ -1,8 +1,16 @@
-$containerColour: #daf2eb;
+/* 
+  Colour palette - Digital POP by Colorami
+  http://www.colourlovers.com/palette/1924831/Digital_POP 
+*/
+
+$containerColour2: #daf2eb;
+$containerColour: #c3eade;
 $onlineColour: #EF8949;
 $offlineColour: #049CB3;
 $fontColour:  rgba(0,0,0,0.8);
 $twitchBannerColour: #333E90;
+$twitchPurple: #6441a5;
+$red: #DC5661;
 $containerWidth: 900px;
 $cardWidth: $containerWidth - 60px;
 $cardHeight: 130px;
@@ -19,6 +27,15 @@ body {
     color: $fontColour;
 }
 
+.twitchHeader {
+    color: $twitchPurple;
+    font-size: 60px;
+    font-family: Patua One, sans-serif;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
 .streamcont {
     background-color: $containerColour;
     display: flex;
@@ -26,7 +43,8 @@ body {
     justify-content: center;
     align-items: center;
     width: $containerWidth;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
+    border: 1px solid rgba(0,0,0,0.2);
 }
 
 .card {
@@ -69,7 +87,9 @@ body {
 }
 
 .card:hover {
-    background-color: gray;
+    /*background-color: gray;*/
+box-shadow: 6px 6px 12px 0px rgba(0,0,0,0.75);
+
 }
 
 
@@ -78,10 +98,61 @@ body {
     
     p {
 	width: 100%;
-	/*text-align: center;*/
 	font-size: 18px;
     }
+}
 
-    /*display: none;*/
+.closed {
+      background-color: gray;
+    
+    p {
+	width: 100%;
+	font-size: 18px;
+    }
+}
+
+.show {
+    display: flex;
+}
+
+.hide {
+    display: none;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 25px;
+    margin-bottom: 20px;
+    box-shadow: 2px 3px 6px -1px rgba(0,0,0,0.75);
+    border: none;
+    
+    button {
+	width: $cardWidth/3;
+	height: 50px;
+	border: none;
+    }
+
+    .allBtn {
+	background-color: $red;
+    }
+
+    .onlineBtn {
+	background-color: $onlineColour;
+    }
+
+    .offlineBtn {
+	background-color: $offlineColour;
+    }
+
+    button:hover {
+	box-shadow: 2px 3px 10px -1px rgba(0,0,0,0.75);
+	z-index: 10;
+    }
+
+    button:active {
+	box-shadow: none;
+    }
 }
 

@@ -1,45 +1,60 @@
 import React from 'react';
 
 class Card extends React.Component {
-    constructor(props) {
-	super(props);
-	console.log(props);
-
-    }
 
     render() {
 
 	let stream;
-	let status = "";
-	if (this.props.stream) {
-	    stream = (
-		<span>
-		    <span className="game">{this.props.stream.game}</span>
-		    <p>{this.props.stream.status}</p>
-		</span>
-	    );
+	let streamMessage = "";
+	let link = "//twitch.tv/" + this.props.name;
+	let game = "";
+	let className = "card";
+	let display = "";
 
-	    status = "online";
+	// is the streamer online/offline/non-existent?
+	// set display info depending on whether person is streaming
+	if (this.props.status === "online") {
+	    game = this.props.stream.game;
+	    streamMessage = this.props.stream.status;
+	}
+	else if (this.props.status === "offline") {
+	    link += "/profile";
+	    streamMessage = "Offline";
+	    className += " offline";
 	}
 	else {
-	    stream = (
-		<p>Offline</p>
-	    );
-
-	    status = "offline";
+	    link = "/profile";
+	    streamMessage = "Account Closed";
+	    className += " closed";
 	}
+
+	// which view mode has the user selected?
+	if (this.props.mode === "all") {
+	    display = "show";
+	}
+	else if (this.props.mode === "online") {
+	    display = (this.props.status === "online") ? "show" : "hide";
+	}
+	else if (this.props.mode === "offline") {
+	    display = (this.props.status === "offline") ? "show" : "hide";
+	}
+	    
 	
+	    
 	return (
-	    <a target="_blank" href={"//twitch.tv/"+this.props.name}
-	       className = {"card " + status}>
-		<img src={this.props.profile.logo}/>
-		<div className = "userDetails">
-		    <span className = "userName ">
-			{this.props.profile.display_name}
-		    </span>
-		    {stream}
-		</div>
-	    </a>
+	    <div className = {display}>
+		<a target="_blank" href={link} className = {className}>
+		    <img src={this.props.profile.logo}/>
+		    
+		    <div className = "userDetails">
+			<span className = "userName">
+			    {this.props.profile.display_name}
+			</span>
+			<span className="game">{game}</span>
+			<p>{streamMessage}</p>
+		    </div>
+		</a>
+	   </div>
 	);
     }
 }
