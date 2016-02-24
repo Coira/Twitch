@@ -10,9 +10,11 @@ class App extends React.Component {
     constructor(props) {
 	super(props);
 
-	/*this.state = {streamers: ['richard_hammer', 'Drathy', 'handmade_hero', 'freecodecamp', 'darnisart', 'brunofin', 'comster404', 'DansGaming', 'RobTheSwan', 'thatsBamboo', 'extracredits', 'ProblemsIRL', 'theindieinitiative']};*/
-	this.streamers = ['comster404', 'richard_hammer', 'Monstercat', 'theindieinitiative', 'imaqtpie'];	
-
+	this.streamers = ['Drathy', 'handmade_hero', 'freecodecamp', 'darnisart',
+			  'brunofin', 'richard_hammer', 'Monstercat',
+			  'theindieinitiative', 'imaqtpie', 'DansGaming',
+			  'RobTheSwan', 'thatsBamboo', 'extracredits',
+			  'ProblemsIRL','comster404' ];
 	this.state = {
 	    streamerData: [],
 	    mode: "all"
@@ -39,7 +41,8 @@ class App extends React.Component {
 	    // fetch user's profile data
 	    $.getJSON(`${pURL}${name}?callback=?`, (data) => {
 		profile.display_name = data.display_name;
-		profile.logo = data.logo;
+		profile.logo = data.logo ? data.logo :
+			       '/imgs/GlitchIcon_purple.png';
 	    }),
 
 	    // fetch stream if account is currently streaming

@@ -23,7 +23,7 @@ class Card extends React.Component {
 	    className += " offline";
 	}
 	else {
-	    link = "/profile";
+	    link += "/profile";
 	    streamMessage = "Account Closed";
 	    className += " closed";
 	}
